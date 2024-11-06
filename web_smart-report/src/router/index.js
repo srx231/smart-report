@@ -6,6 +6,7 @@ import UserReg from '@/view/components/main/UserReg'
 import Homeview from '@/view/Homeview'
 import Form from '@/view/components/main/Form'
 import Userinfo from '@/view/components/main/Userinfo'
+
 Vue.use(Router)
 
 export default new Router({
@@ -45,7 +46,7 @@ export default new Router({
       component: Login
     },
     //主页内容
-
+    
 
   ]
 })
