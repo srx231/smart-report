@@ -6,6 +6,7 @@ import UserReg from '@/view/components/main/UserReg'
 import Homeview from '@/view/Homeview'
 import Form from '@/view/components/main/Form'
 import Userinfo from '@/view/components/main/Userinfo'
+import userfrom from '../view/components/main/userfrom.vue';
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
           path: 'form',
           name: 'form',
           component: Form
+        },
+        {
+          path: 'userfrom',
+          name: 'userfrom',
+          component: userfrom
         },
         {
           path: 'userinfo',

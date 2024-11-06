@@ -1,58 +1,78 @@
 <template>
     <div id="app">
-        <el-table :data="tableData" border style="width: 100%">
-            <el-table-column fixed prop="id" label="ID" width="180">
-            </el-table-column>
-            <el-table-column prop="name" label="创建人" width="180">
-            </el-table-column>
-            <el-table-column prop="operation" label="操作名称" width="180">
-            </el-table-column>
-            <el-table-column prop="time" label="操作时间" width="180">
-            </el-table-column>
-            <el-table-column prop="address" label="用户操作设备IPv4地址" width="180">
-            </el-table-column>
-            <el-table-column label="操作" width="100">
-                <template fixed slot-scope="scope">
-                    <el-button @click="handleClick(scope.row)" type="text" size="small">分配权限</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-       
-
-        <el-pagination  fixed="bottom" background layout="prev, pager, next" :total="1000">
-        </el-pagination>
+        <el-card class="box-card">
+            <div v-show="hiddent">
+                <el-button @click="outForm" style="margin-bottom: 5px;" :circle="true" type="primary">导出表单</el-button>
+                <fc-designer ref="designer" height="100vh" />
+            </div>
+            <div v-show="!hiddent">
+                <form-create :rule="rule" :option="option" :value.sync="value"></form-create>
+            </div>
+        </el-card>
     </div>
 </template>
 
 <script>
-//引入api的接口文件
-// import { userRegister } from '@api/user/list';
+
  
 export default {
-   name: 'userlist',
-    methods: {
-        
-        submit(){
-          this.$axios.post('/api/user/list', this.userFromData).then(res => {
-              console.log(res);
-          })
+   name: 'userfrom',
+   data() {
+        return {
+            //表单的隐藏和显示
+            hiddent: true,
+            //表单的实例对象
+            fApi: {},
+            //表单的生成规则
+            rule: [],
+            //表单数据，
+            value: {},
+            //组件的参数配置
+            option: {
+                //表单的提交事件
+                onSubmit: function (formData) {
+                    console.log(formData)
+                }
+            }
+
         }
     },
-   
-    data() {
-        return {
-          userlistData:{
-            id:"",
-            name:"",
-            operation:"",
-            time:"",
-            address:""
-          },
+    methods: {
+        getApi() {
+            return this.fApi
+        },
+        getRule() {
+            return this.rule
+        },
+        outForm() {
+            this.hiddent = false,
+                this.rule = JSON.parse(this.$refs.designer.getJson())
+            console.log(this.$refs.designer.getJson());
 
-          }
         }
-      }
-    
-
-
+    },
+    mounted() {
+        //消除选项框的aria-hidden的错误使用
+        this.$refs.designer.$children.forEach((item) => {
+            item.$refs.designer.removeAttribute("aria-hidden");
+        });
+    }
+}
 </script>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+h1, h2 {
+  font-weight: normal;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+</style>
